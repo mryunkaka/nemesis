@@ -1,9 +1,14 @@
 (() => {
+  const USE_STATIC_MODE = window.DASHBOARD_USE_STATIC === true || window.location.hostname !== "127.0.0.1" && window.location.hostname !== "localhost";
   const API_BASE_URL = (window.DASHBOARD_API_BASE_URL || "http://127.0.0.1:3000/api").replace(/\/$/, "");
 
   if (!window.maplibregl || !window.AuditMap) {
     console.error("MapLibre GL or AuditMap failed to load.");
     return;
+  }
+
+  if (USE_STATIC_MODE) {
+    console.log("Dashboard running in STATIC mode - reading from local JSON files");
   }
 
   const state = {
@@ -394,6 +399,42 @@
   }
 
   async function fetchJson(path) {
+    if (USE_STATIC_MODE) {
+      // Map API paths to static JSON files
+      if (path === "/bootstrap") {
+        const response = await fetch("data/bootstrap.json");
+        const text = await response.text();
+        return JSON.parse(text);
+      }
+      if (path.startsWith("/regions/")) {
+        const regionKey = path.split("/")[2];
+        const safeKey = regionKey.replace(/[^a-z0-9-]/gi, "_");
+        const response = await fetch(`data/regions/${safeKey}.json`);
+        if (!response.ok) return null;
+        const text = await response.text();
+        return JSON.parse(text);
+      }
+      if (path.startsWith("/provinces/")) {
+        const provinceKey = path.split("/")[2];
+        const safeKey = provinceKey.replace(/[^a-z0-9-]/gi, "_");
+        const response = await fetch(`data/provinces/${safeKey}.json`);
+        if (!response.ok) return null;
+        const text = await response.text();
+        return JSON.parse(text);
+      }
+      if (path.startsWith("/owners/packages")) {
+        const urlParams = new URLSearchParams(path.split("?")[1] || "");
+        const ownerType = urlParams.get("ownerType");
+        const ownerName = urlParams.get("ownerName");
+        const safeKey = `${ownerType}_${ownerName.replace(/[^a-z0-9-]/gi, "_")}`;
+        const response = await fetch(`data/owners/${safeKey}.json`);
+        if (!response.ok) return null;
+        const text = await response.text();
+        return JSON.parse(text);
+      }
+      throw new Error(`Static mode: unsupported path ${path}`);
+    }
+
     const response = await fetch(`${API_BASE_URL}${path}`);
     const text = await response.text();
     let payload = null;

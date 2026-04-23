@@ -5,5 +5,13 @@
 backend/data/
 backend/dataset/
 
+# Heavy files (upload manually to hosting)
+backend/dashboard.sql
+*.zip
+inaproc-ds/
+
+# Static export data (regenerate locally)
+frontend/data/
+
 # macOS
 .DS_Store

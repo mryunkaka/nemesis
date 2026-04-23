@@ -10,7 +10,8 @@
     "db:export": "node scripts/export-db.js",
     "db:import": "node scripts/import-db.js",
     "export": "npm run db:export",
-    "import": "npm run db:import"
+    "import": "npm run db:import",
+    "export:static": "node scripts/export-static.js"
   },
   "dependencies": {
     "better-sqlite3": "^12.8.0",
