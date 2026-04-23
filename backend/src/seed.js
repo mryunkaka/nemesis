@@ -51,6 +51,13 @@ const REGION_KEY_ALIASES = {
   "tanjung pinang": "tanjungpinang",
   "tebing tinggi": "tebingtinggi",
   terenggalek: "trenggalek",
+  // Fix for regions with 0 data - mapping shortened names to full names
+  "meranti": "kepulauanmeranti",
+  "toba samosir": "toba",
+  "toba": "toba",
+  "selayar": "kepulauanselayar",
+  "taliabu": "pulautaliabu",
+  "tanimbar": "kepulauantanimbar",
 };
 
 const REGION_DISPLAY_ALIASES = {
