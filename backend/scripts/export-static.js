@@ -7,7 +7,7 @@ const db = openDatabase();
 const runtimeDbPath = resolveRuntimeDbPath();
 
 // Export directory
-const exportDir = path.join(__dirname, "..", "frontend", "data");
+const exportDir = path.join(__dirname, "..", "..", "data");
 if (!fs.existsSync(exportDir)) {
   fs.mkdirSync(exportDir, { recursive: true });
 }

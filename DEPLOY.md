@@ -40,7 +40,7 @@ npm run export:static
 
 Perintah ini akan:
 - Export data dari SQLite ke format JSON
-- Menyimpan file di `frontend/data/`
+- Menyimpan file di `data/`
 - Membuat file:
   - `data/bootstrap.json` - Data utama dashboard
   - `data/regions/*.json` - Data paket per kabupaten/kota
@@ -49,15 +49,17 @@ Perintah ini akan:
 
 ### Langkah 2: Upload ke Shared Hosting
 
-Upload seluruh isi folder `frontend` ke shared hosting Anda menggunakan:
+Upload seluruh isi repository ke shared hosting Anda menggunakan:
 - File Manager (cPanel/DirectAdmin)
 - FTP (FileZilla)
 - Web-based file manager
 
 **File yang perlu di-upload:**
-- `index.html`
-- `assets/` (seluruh folder)
-- `data/` (folder yang berisi JSON dari export)
+- `index.html` (sudah di root)
+- `assets/` (sudah di root)
+- `data/` (folder yang berisi JSON dari export - akan dibuat setelah export)
+- `backend/` (opsional untuk development lokal)
+- File lainnya (DEPLOY.md, git-deploy.php, dll)
 
 ### Langkah 3: Selesai
 
@@ -104,15 +106,14 @@ Cron job akan mengecek setiap 5 menit dan otomatis pull update dari GitHub.
 ### Catatan
 
 - Cron job akan menjalankan `git pull` dari GitHub
-- Setelah pull, otomatis menyalin isi folder `frontend/` ke root hosting (index.html, assets/, data/)
-- Struktur di GitHub tetap `frontend/` untuk development, tapi di hosting akan otomatis di-copy ke root
+- Struktur folder di GitHub sudah sesuai dengan hosting, tidak perlu copy manual
 - Pastikan path di git-deploy.php sesuai dengan hosting Anda
 - Monitor log di file yang ditentukan di `$log`
 - Export database ke JSON perlu dilakukan manual sebelum push:
   ```bash
   cd backend
   npm run export:static
-  git add frontend/data/
+  git add data/
   git commit -m "Update data"
   git push origin main
   ```

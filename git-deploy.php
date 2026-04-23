@@ -33,26 +33,6 @@ if ($old !== $new) {
             file_put_contents($log, "[$date] Deploy $commit\n", FILE_APPEND);
         }
     }
-
-    // Copy isi folder frontend ke root (untuk static mode)
-    if (is_dir($repo . "/frontend")) {
-        // Copy index.html
-        if (file_exists($repo . "/frontend/index.html")) {
-            copy($repo . "/frontend/index.html", $repo . "/index.html");
-        }
-
-        // Copy folder assets
-        if (is_dir($repo . "/frontend/assets")) {
-            shell_exec("cp -r " . $repo . "/frontend/assets/* " . $repo . "/assets/ 2>&1");
-        }
-
-        // Copy folder data (jika ada)
-        if (is_dir($repo . "/frontend/data")) {
-            shell_exec("cp -r " . $repo . "/frontend/data/* " . $repo . "/data/ 2>&1");
-        }
-
-        file_put_contents($log, "[$date] Copied frontend files to root\n", FILE_APPEND);
-    }
 } else {
     // Opsional: hapus komentar di bawah ini jika kamu ingin mencatat bahwa Cron Job dicek tapi kosong
     // file_put_contents($log, "[" . date("Y-m-d H:i:s") . "] Checked - No new commits.\n", FILE_APPEND);
