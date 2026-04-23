@@ -70,41 +70,50 @@ Frontend akan:
 
 ---
 
-## Auto Deploy dengan GitHub Actions (Rekomendasi)
+## Auto Deploy dengan Cron Job PHP (Rekomendasi)
 
-Untuk deploy otomatis setiap commit ke branch `main`, gunakan GitHub Actions + FTP.
+Untuk deploy otomatis setiap commit ke branch `main`, gunakan cron job PHP.
 
-### Setup GitHub Actions
+### Setup Cron Job
 
-1. **Tambahkan Secrets di GitHub:**
-   - Buka repository di GitHub
-   - Settings → Secrets and variables → Actions → New repository secret
-   - Tambahkan 3 secrets:
-     - `FTP_SERVER` → hostname FTP (misal: `ftp.example.com`)
-     - `FTP_USERNAME` → username FTP
-     - `FTP_PASSWORD` → password FTP
+1. **Upload file git-deploy.php:**
+   - Upload file `git-deploy.php` ke hosting
+   - Lokasi: di luar public_html (misal: `/home/hark8423/git-deploy-nemesis.php`)
 
-2. **Workflow sudah dibuat:**
-   - File: `.github/workflows/deploy.yml`
-   - Akan otomatis:
-     - Export database ke JSON
-     - Upload ke shared hosting via FTP
-     - Deploy ke `/public_html/nemesis/`
+2. **Setup Cron Job di cPanel:**
+   - Buka cPanel → Cron Jobs
+   - Tambahkan cron job baru:
+     - Minute: `*/5` (setiap 5 menit)
+     - Command: `php /home/hark8423/git-deploy-nemesis.php`
 
-3. **Push ke main untuk trigger deploy:**
+3. **Sesuaikan path di git-deploy.php:**
+   ```php
+   $repo = "/home/hark8423/public_html/nemesis";
+   $log  = "/home/hark8423/git-deploy-nemesis.log";
+   ```
+
+4. **Push ke main untuk trigger deploy:**
    ```bash
    git add .
    git commit -m "Update data"
    git push origin main
    ```
 
-Deploy akan otomatis berjalan setelah push ke branch `main`.
+Cron job akan mengecek setiap 5 menit dan otomatis pull update dari GitHub.
 
 ### Catatan
 
-- GitHub Actions akan menjalankan `npm run export:static` setiap deploy
-- Pastikan database sudah di-reset sebelum push jika data berubah
-- Monitor progress di tab "Actions" di GitHub repository
+- Cron job akan menjalankan `git pull` dari GitHub
+- Pastikan path di git-deploy.php sesuai dengan hosting Anda
+- Monitor log di file yang ditentukan di `$log`
+- Export database ke JSON perlu dilakukan manual sebelum push:
+  ```bash
+  cd backend
+  npm run export:static
+  git add frontend/data/
+  git commit -m "Update data"
+  git push origin main
+  ```
 
 ---
 
