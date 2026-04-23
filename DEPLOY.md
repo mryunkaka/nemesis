@@ -104,6 +104,8 @@ Cron job akan mengecek setiap 5 menit dan otomatis pull update dari GitHub.
 ### Catatan
 
 - Cron job akan menjalankan `git pull` dari GitHub
+- Setelah pull, otomatis menyalin isi folder `frontend/` ke root hosting (index.html, assets/, data/)
+- Struktur di GitHub tetap `frontend/` untuk development, tapi di hosting akan otomatis di-copy ke root
 - Pastikan path di git-deploy.php sesuai dengan hosting Anda
 - Monitor log di file yang ditentukan di `$log`
 - Export database ke JSON perlu dilakukan manual sebelum push:
