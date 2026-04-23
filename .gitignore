@@ -12,6 +12,7 @@ inaproc-ds/
 
 # Static export data (regenerate locally)
 frontend/data/
+data/
 
 # macOS
 .DS_Store
