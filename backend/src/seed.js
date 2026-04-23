@@ -58,6 +58,11 @@ const REGION_KEY_ALIASES = {
   "selayar": "kepulauanselayar",
   "taliabu": "pulautaliabu",
   "tanimbar": "kepulauantanimbar",
+  // Additional aliases for regions with missing data
+  "kota baru": "kotabaru",
+  "kotabaru": "kotabaru",
+  "rote": "rotendao",
+  "sangihe": "kepulauansangihe",
 };
 
 const REGION_DISPLAY_ALIASES = {
@@ -1254,7 +1259,14 @@ function resolveRegionKeys(locationRaw, lookup) {
     }
 
     const lookupKey = buildLocationLookupKey(parsed.provinceName, parsed.regionName, parsed.regionType);
-    const region = lookup.get(lookupKey);
+    let region = lookup.get(lookupKey);
+
+    // Fallback: try alternative region type if initial lookup fails
+    if (!region) {
+      const alternativeType = parsed.regionType === "Kota" ? "Kabupaten" : "Kota";
+      const alternativeKey = buildLocationLookupKey(parsed.provinceName, parsed.regionName, alternativeType);
+      region = lookup.get(alternativeKey);
+    }
 
     if (region) {
       resolvedKeys.add(region.region_key);
