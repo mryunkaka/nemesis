@@ -12,6 +12,24 @@
 <script defer src="assets/js/app.js"></script>
 </head>
 <body>
+<div class="ai-warning-modal" id="aiWarningModal">
+<div class="ai-warning-content">
+<div class="ai-warning-header">
+<span class="ai-warning-badge">PERINGATAN</span>
+</div>
+<h2 class="ai-warning-title">Data pada website ini merupakan hasil klasifikasi AI</h2>
+<p class="ai-warning-text">
+Isi data pada website ini merupakan hasil klasifikasi dari AI, khususnya Large Language Model, dan dapat keliru.
+</p>
+<p class="ai-warning-text">
+Harap gunakan data di website ini hanya sebagai acuan dan bantuan semata untuk mendukung pemantauan publik.
+</p>
+<p class="ai-warning-text">
+Lihat <a href="#" class="ai-warning-link">Transparansi Algoritma</a> untuk detail model dan prompt kami agar Anda dapat memahami bagaimana klasifikasi dilakukan.
+</p>
+<button class="ai-warning-btn" onclick="document.getElementById('aiWarningModal').style.display='none'">Saya Mengerti</button>
+</div>
+</div>
 <div class="hdr">
 <div class="hdr-l"><div class="logo">AUD</div><div class="hdr-t"><h1>Audit Pengadaan per Kab/Kota</h1><span>Artifact hasil analyze &middot; LKPP / SiRUP &middot; Tahun Anggaran 2026</span></div></div>
 <div class="hdr-r"><div class="ll"><span class="ldot"></span> LIVE</div><div class="yr">TA 2026</div><button class="mobile-kpi-btn" onclick="document.getElementById('kpi').classList.toggle('open')">📊 KPI</button></div>
