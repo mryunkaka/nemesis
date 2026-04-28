@@ -10,11 +10,14 @@ dataset/
 *.db
 *.sqlite-wal
 *.sqlite-shm
+*.sqlite-journal
+*.db-journal
 
 # Database exports / dumps
 data/exports/
 dashboard.sql
 *.sql
+*.dump
 
 # Heavy local datasets / archives
 *.zip
@@ -25,7 +28,13 @@ dashboard.sql
 *.csv
 *.jsonl
 inaproc-ds/
+inaproc-ds/outputs/
+inaproc-ds/downloads/
 gpt-5.4-analyzed-sirup.zip
+
+# Local refresh overlays / generated ingestion artifacts
+data/live-sync/
+data/tmp/
 
 # Local generated analysis/docs
 NEMESIS_PROJECT_MAP.md
