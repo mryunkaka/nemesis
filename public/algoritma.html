@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transparansi Algoritma - Nemesis</title>
+<link rel="icon" href="data:,"/>
+<link rel="stylesheet" href="assets/css/styles.css?v=3"/>
+<style>
+.algo-page{background:var(--b0);min-height:100vh;overflow-y:auto}
+.algo-shell{max-width:1000px;margin:0 auto;padding:40px 24px}
+.algo-hero{text-align:center;margin-bottom:48px;padding:32px 0}
+.algo-badge{display:inline-block;background:var(--sage-g);border:1px solid var(--sage);color:var(--sage);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;padding:8px 16px;border-radius:20px;margin-bottom:20px}
+.algo-hero h1{font-size:36px;font-weight:800;color:var(--t1);line-height:1.2;margin-bottom:16px}
+.algo-hero p{font-size:16px;color:var(--t3);line-height:1.6;max-width:680px;margin:0 auto 24px}
+.algo-actions{display:flex;justify-content:center;gap:12px}
+.algo-link-btn{display:inline-flex;align-items:center;gap:8px;background:var(--b2);border:1px solid var(--bd);color:var(--t1);text-decoration:none;font-size:14px;font-weight:600;padding:12px 20px;border-radius:8px;transition:all .2s}
+.algo-link-btn:hover{background:var(--b2h);border-color:var(--sage);color:var(--sage)}
+.algo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:24px}
+.algo-card{background:var(--b2);border:1px solid var(--bd);border-radius:12px;padding:24px}
+.algo-card h2{font-size:18px;font-weight:700;color:var(--t1);margin-bottom:16px}
+.algo-card p{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:12px}
+.algo-card p:last-child{margin-bottom:0}
+.algo-card-full{grid-column:1 / -1}
+.algo-meta-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.algo-meta-item{background:var(--b0);border:1px solid var(--bd);border-radius:8px;padding:12px 16px}
+.algo-meta-item span{display:block;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.algo-meta-item strong{display:block;font-size:14px;color:var(--t1);font-weight:700}
+.algo-code-block{background:var(--b0);border:1px solid var(--bd);border-radius:8px;margin:16px 0;overflow:hidden}
+.algo-code-label{background:var(--b1);border-bottom:1px solid var(--bd);padding:10px 16px;font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.algo-code-block pre{margin:0;padding:16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.6;color:var(--t2);overflow-x:auto;white-space:pre-wrap;word-wrap:break-word}
+.algo-code-block code{font-family:inherit;color:inherit}
+@media(max-width:768px){.algo-grid{grid-template-columns:1fr}.algo-hero h1{font-size:28px}.algo-meta-list{grid-template-columns:1fr}}
+</style>
+</head>
+<body class="algo-page">
+<main class="algo-shell">
+<section class="algo-hero">
+<div class="algo-badge">Transparansi Algoritma</div>
+<h1>Bagaimana klasifikasi pengadaan dilakukan</h1>
+<p>Halaman ini menjelaskan model, prompt, format output, dan metadata analisis yang digunakan dalam klasifikasi paket pengadaan pada dashboard Nemesis.</p>
+<div class="algo-actions">
+<a class="algo-link-btn" href="/">Kembali ke Dashboard</a>
+</div>
+</section>
+
+<section class="algo-grid">
+<article class="algo-card">
+<h2>Ringkasan Model</h2>
+<div class="algo-meta-list">
+<div class="algo-meta-item"><span>Model</span><strong>GPT-5.4</strong></div>
+<div class="algo-meta-item"><span>Fine-tuned</span><strong>No</strong></div>
+<div class="algo-meta-item"><span>SiRUP Data Version</span><strong>10 April 2026</strong></div>
+<div class="algo-meta-item"><span>Analyze Date</span><strong>14 April 2026</strong></div>
+</div>
+</article>
+
+<article class="algo-card">
+<h2>Catatan Penggunaan</h2>
+<p>Hasil klasifikasi ini dihasilkan oleh AI dan dapat keliru. Informasi pada dashboard sebaiknya digunakan sebagai acuan awal untuk membantu pemantauan publik, bukan sebagai satu-satunya dasar penilaian.</p>
+<p>Model diarahkan untuk menilai berdasarkan data yang tersedia, terutama judul paket, pagu, spesifikasi, kuantitas, dan konteks lembaga. Model juga diarahkan agar tidak menaikkan klasifikasi hanya karena data tidak lengkap.</p>
+</article>
+
+<article class="algo-card algo-card-full">
+<h2>Prompt</h2>
+<div class="algo-code-block">
+<div class="algo-code-label">System Prompt</div>
+<pre><code>Kamu adalah auditor pemerintah. Tugasmu meng audit pengadaan pemerintah dan mendeteksi anomali, kecurangan dan item pengadaan yang tidak pantas. Tolong analisa item pengadaan ini
+
+{Item}</code></pre>
+</div>
+</article>
+
+<article class="algo-card algo-card-full">
+<h2>Structured Output</h2>
+<div class="algo-code-block">
+<pre><code>{
+  #data
+  paket: Item.Paket
+  dalamNegeri: Item.ProdukDalamNegeri
+  jenisPengadaan: Item.JenisPengadaan
+  metode: Item.Metode
+  lembaga: Item.K/L/PD ### ex: KOMDIGI
+  satker: Item.SatuanKerja
+  lokasi: Item.Lokasi
+  id: Item.Id
+  pagu: Item.Pagu
+  pemilihanDate: Item.Pemilihan
+
+  #detail
+  sumberDana: Item.Detail.SumberDana ?
+  isUMKM: Item.Detail.UsahaKecilKoperasi
+  volumePekerjaan: Item.Detail.VolumePekerjaan
+  uraianPekerjaan: Item.Detail.UraianPekerjaan
+  spesifikasiPekerjaan: Item.Detail.UraianPekerjaan
+
+  #AI Generated
+  potensiPemborosan: double ### Total potensi pemborosan anggaran karena mark up / pembelian barang yang tidak perlu
+  tags: {
+    isInappropriate: low/med/high/absurd ### Barang ini merupakan pengadaan yang tak pantas, item seperti pembelian meja biliar, sewa akuarium untuk kantor DPRD, buzzer untuk TNI, sewa Range Rover 5 miliar, atau pin emas puluhan juta ditandai sebagai absurd karena dari judul saja sudah tidak masuk akal dan dapat memicu kecemburuan sosial, terutama di kondisi perekonomian yang tidak sedang baik-baik saja. Klasifikasi ini juga digunakan untuk item yang memberi kesan APBN tidak dibelanjakan dengan baik dan lebih mempermakmur pejabat. Sementara itu, item seperti paket meeting luar kota, transportasi, renovasi bangunan, atau pembangunan rumah ibadah dapat diklasifikasikan sebagai high jika spesifikasi, konteks, dan lembaga yang mengadakan tidak relevan. Selebihnya dapat masuk ke medium dan low. Jangan menilai berdasarkan ketidaklengkapan data. Jika data tidak lengkap, jangan mengklasifikasikan sebagai high hanya karena informasinya kurang. Jangan berasumsi dan nilai hanya berdasarkan keyakinan tinggi dari data yang tersedia, seperti pagu, judul barang, spesifikasi, kuantitas, dan lembaga yang membuka pengadaan untuk mendapatkan konteks. Ingat, high hanya untuk item yang ekstrem dan benar-benar absurd, seperti sewa akuarium, mobil mewah, pin emas, dan lain-lain yang sudah terlihat jelas sebagai pemborosan dan penyalahgunaan.
+    inappropriateReason: string max 1000 chars, optional, only if isInappropriate is high
+  }
+}</code></pre>
+</div>
+</article>
+</section>
+</main>
+</body>
+</html>

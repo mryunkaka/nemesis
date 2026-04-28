@@ -1,0 +1,29 @@
+{
+  "name": "nemesis-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Nemesis - Public-facing investigative interface for procurement data analysis",
+  "main": "server/server.js",
+  "scripts": {
+    "dev": "node --watch server/server.js",
+    "start": "node server/server.js",
+    "db:reset": "node scripts/reset-db.js",
+    "db:refresh": "node scripts/refresh-db.js",
+    "db:sync-missing": "node scripts/sync-sqlite-missing.js",
+    "sync:inaproc": "node scripts/fetch-inaproc-package.js",
+    "sync:inaproc:part": "node scripts/fetch-inaproc-part.js",
+    "db:export": "node scripts/export-db.js",
+    "db:import": "node scripts/import-db.js",
+    "export": "npm run db:export",
+    "import": "npm run db:import"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.8.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.0",
+    "express": "^5.2.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

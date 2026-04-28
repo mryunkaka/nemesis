@@ -1,18 +1,55 @@
 # Dependencies
 **/node_modules/
+package-lock.json
 
-# Local runtime data (SQLite)
-backend/data/
-backend/dataset/
-
-# Heavy files (upload manually to hosting)
-backend/dashboard.sql
-*.zip
-inaproc-ds/
-
-# Static export data (regenerate locally)
-frontend/data/
+# Local runtime data (SQLite) - large files, upload manually to hosting
 data/
+dataset/
+*.sqlite
+*.sqlite3
+*.db
+*.sqlite-wal
+*.sqlite-shm
+
+# Database exports / dumps
+data/exports/
+dashboard.sql
+*.sql
+
+# Heavy local datasets / archives
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+*.csv
+*.jsonl
+inaproc-ds/
+gpt-5.4-analyzed-sirup.zip
+
+# Local generated analysis/docs
+NEMESIS_PROJECT_MAP.md
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# Environment (create .env from .env.example on hosting)
+.env
 
 # macOS
 .DS_Store
+
+# Windows
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Legacy folders (kept for reference, remove after migration)
+backend/
+frontend/
