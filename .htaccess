@@ -1,0 +1,18 @@
+RewriteEngine On
+
+Options -Indexes
+
+RewriteRule ^data/ - [F,L,NC]
+RewriteRule ^dataset/ - [F,L,NC]
+RewriteRule ^inaproc-ds/ - [F,L,NC]
+RewriteRule ^server/ - [F,L,NC]
+RewriteRule ^scripts/ - [F,L,NC]
+RewriteRule ^backend/ - [F,L,NC]
+RewriteRule ^frontend/ - [F,L,NC]
+RewriteRule ^seed/ - [F,L,NC]
+RewriteRule ^(?:\.env|package(?:-lock)?\.json|dashboard\.sql)$ - [F,L,NC]
+
+RewriteRule ^api(?:/.*)?$ api/index.php [QSA,L]
+RewriteRule ^assets/(.*)$ public/assets/$1 [L]
+RewriteRule ^algoritma/?$ public/algoritma.html [L]
+RewriteRule ^$ public/index.html [L]

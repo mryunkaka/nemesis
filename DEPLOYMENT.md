@@ -1,5 +1,56 @@
 # Deployment Guide
 
+## Shared Hosting PHP
+
+Jika hosting Anda hanya menyediakan PHP dan tidak bisa menjalankan Node.js, gunakan mode PHP yang sekarang tersedia di repo ini.
+
+Kebutuhan minimum:
+
+- Apache dengan `mod_rewrite`
+- PHP dengan ekstensi `pdo_sqlite` atau `sqlite3`
+- Document root boleh tetap ke root repo
+
+File yang wajib ada di hosting:
+
+- `.env`
+- `data/dashboard.sqlite`
+- folder `public/`
+- folder `api/`
+- file `.htaccess`
+
+Nilai `.env` minimum untuk mode ini:
+
+```env
+PORT=3000
+CORS_ORIGIN=*
+SQLITE_PATH=data/dashboard.sqlite
+AUDIT_DATASET_DIR=dataset
+LIVE_SYNC_DIR=data/live-sync
+GEO_ROOT_PATH=seed
+AUTO_REFRESH_ENABLED=false
+AUTO_REFRESH_RUN_ON_STARTUP=false
+AUTO_REFRESH_HOUR=1
+AUTO_REFRESH_MINUTE=0
+AUTO_REFRESH_TIMEZONE=Asia/Jakarta
+AUTO_REFRESH_SOURCE_MODE=none
+AUTO_REFRESH_SOURCE_URLS=
+AUTO_REFRESH_HEADERS_JSON=
+AUTO_REFRESH_CLEAN_DATASET_DIR=false
+AUTO_REFRESH_TIMEOUT_MS=300000
+AUTO_REFRESH_COMMAND=
+AUTO_REFRESH_SYNC_CODES=
+AUTO_REFRESH_ADMIN_TOKEN=
+AUTO_REFRESH_ALLOW_MANUAL_TRIGGER=true
+INAPROC_BROWSER_MODE=real
+INAPROC_BROWSER_USE_KERNEL=false
+```
+
+Catatan:
+
+- mode PHP ini hanya melayani endpoint baca dashboard
+- endpoint refresh admin Node tidak tersedia di PHP
+- jika hosting tidak punya `pdo_sqlite` maupun `sqlite3`, backend PHP tidak bisa membaca `dashboard.sqlite`
+
 ## Quick Start untuk Hosting
 
 ### 1. Clone & Install
