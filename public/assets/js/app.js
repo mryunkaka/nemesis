@@ -393,8 +393,7 @@
     return error instanceof Error ? error.message : String(error);
   }
 
-  async function fetchJson(path) {
-    const response = await fetch(`${API_BASE_URL}${path}`);
+  async function parseJsonResponse(response, path) {
     const text = await response.text();
     let payload = null;
     if (text) {
@@ -404,10 +403,32 @@
         throw new Error(`Invalid JSON response from ${path}`);
       }
     }
+
     if (!response.ok) {
       throw new Error(payload && payload.error ? payload.error : `Request failed (${response.status})`);
     }
+
     return payload;
+  }
+
+  async function fetchStaticBootstrap() {
+    const response = await fetch("/dashboard-data/bootstrap.json", { cache: "no-store" });
+    return parseJsonResponse(response, "/dashboard-data/bootstrap.json");
+  }
+
+  async function fetchJson(path) {
+    if (path === "/bootstrap") {
+      try {
+        const response = await fetch(`${API_BASE_URL}${path}`, { cache: "no-store" });
+        return await parseJsonResponse(response, path);
+      } catch (error) {
+        console.warn("Primary bootstrap API failed, falling back to static dashboard data.", error);
+        return fetchStaticBootstrap();
+      }
+    }
+
+    const response = await fetch(`${API_BASE_URL}${path}`);
+    return parseJsonResponse(response, path);
   }
 
   function normalizeDashboardData(payload) {

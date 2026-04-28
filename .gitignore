@@ -12,6 +12,8 @@ dataset/
 *.sqlite-shm
 *.sqlite-journal
 *.db-journal
+!public/data/
+!public/data/bootstrap.json
 
 # Database exports / dumps
 data/exports/

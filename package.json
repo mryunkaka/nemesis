@@ -12,6 +12,7 @@
     "db:sync-missing": "node scripts/sync-sqlite-missing.js",
     "sync:inaproc": "node scripts/fetch-inaproc-package.js",
     "sync:inaproc:part": "node scripts/fetch-inaproc-part.js",
+    "export:bootstrap": "node scripts/export-static-bootstrap.js",
     "db:export": "node scripts/export-db.js",
     "db:import": "node scripts/import-db.js",
     "export": "npm run db:export",

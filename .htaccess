@@ -14,5 +14,6 @@ RewriteRule ^(?:\.env|package(?:-lock)?\.json|dashboard\.sql)$ - [F,L,NC]
 
 RewriteRule ^api(?:/.*)?$ api/index.php [QSA,L]
 RewriteRule ^assets/(.*)$ public/assets/$1 [L]
+RewriteRule ^dashboard-data/(.*)$ public/data/$1 [L]
 RewriteRule ^algoritma/?$ public/algoritma.html [L]
 RewriteRule ^$ public/index.html [L]
