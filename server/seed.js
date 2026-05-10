@@ -322,7 +322,17 @@ function parseInteger(value) {
     return Math.round(value);
   }
 
-  const normalized = String(value).trim().replace(/\./g, "").replace(/,/g, "");
+  const strValue = String(value).trim();
+
+  // Handle US/English format: dot as decimal separator (e.g., "202400000.0")
+  // If there's a dot and no comma, treat dot as decimal
+  if (strValue.includes(".") && !strValue.includes(",")) {
+    const parsed = Number.parseFloat(strValue);
+    return Number.isFinite(parsed) ? Math.round(parsed) : null;
+  }
+
+  // Handle Indonesian format: comma as decimal separator, dot as thousands separator (e.g., "202.400.000,0")
+  const normalized = strValue.replace(/\./g, "").replace(/,/g, ".");
 
   if (!normalized) {
     return null;
@@ -337,7 +347,18 @@ function parseAmount(value, budget) {
     return 0;
   }
 
-  const parsed = Number.parseFloat(String(value).trim().replace(/\./g, "").replace(/,/g, ""));
+  const strValue = String(value).trim();
+  let parsed;
+
+  // Handle US/English decimal format emitted by current CSV exports, e.g. "3500000000000.0".
+  if (strValue.includes(".") && !strValue.includes(",")) {
+    parsed = Number.parseFloat(strValue);
+  } else {
+    // Handle Indonesian format where dot is thousands separator and comma is decimal separator.
+    const normalized = strValue.replace(/\./g, "").replace(/,/g, ".");
+    parsed = Number.parseFloat(normalized);
+  }
+
   if (!Number.isFinite(parsed) || parsed <= 0) {
     return 0;
   }
@@ -347,6 +368,41 @@ function parseAmount(value, budget) {
   }
 
   return parsed;
+}
+
+function isPlaceholderAuditRow(row) {
+  if (!row || typeof row !== "object") {
+    return false;
+  }
+
+  const id = cleanText(row.id);
+  const packageName = cleanText(row.paket);
+  const ownerName = cleanText(row.lembaga);
+  const satker = cleanText(row.satker);
+  const location = cleanText(row.lokasi);
+  const workDescription = cleanText(row.uraianPekerjaan);
+  const specification = cleanText(row.spesifikasiPekerjaan);
+  const selectionDate = cleanText(row.pemilihanDate);
+  const fundingSource = cleanText(row.sumberDana);
+  const budget = parseInteger(row.pagu);
+  const potentialWaste = parseAmount(row.potensiPemborosan, budget);
+
+  if (!id) {
+    return false;
+  }
+
+  const generatedPackageName = packageName === `Paket ${id}`;
+  const missingOwner = !ownerName || UNKNOWN_OWNER_NAMES.has(toComparableWords(ownerName));
+  const missingSubstance =
+    missingOwner &&
+    !satker &&
+    !location &&
+    !workDescription &&
+    !specification &&
+    !selectionDate &&
+    !fundingSource;
+
+  return generatedPackageName && missingSubstance && (budget === null || budget === 0) && potentialWaste === 0;
 }
 
 function normalizeSeverity(value) {
@@ -800,7 +856,7 @@ function forEachAuditRow(source, onRow) {
       const rows = parseCsv(fs.readFileSync(filePath, "utf8"));
 
       for (const row of rows) {
-        if (!shouldSkipBaseRow(row)) {
+        if (!shouldSkipBaseRow(row) && !isPlaceholderAuditRow(row)) {
           onRow(row);
         }
       }
@@ -808,7 +864,11 @@ function forEachAuditRow(source, onRow) {
   }
 
   for (const filePath of source.supplementalJsonlFiles || []) {
-    forEachJsonlRow(filePath, onRow);
+    forEachJsonlRow(filePath, (row) => {
+      if (!isPlaceholderAuditRow(row)) {
+        onRow(row);
+      }
+    });
   }
 }
 

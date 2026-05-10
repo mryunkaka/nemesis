@@ -50,6 +50,8 @@ Catatan:
 - mode PHP ini hanya melayani endpoint baca dashboard
 - endpoint refresh admin Node tidak tersedia di PHP
 - jika hosting tidak punya `pdo_sqlite` maupun `sqlite3`, backend PHP tidak bisa membaca `dashboard.sqlite`
+- pada shared hosting dengan batas memory kecil, `GET /api/bootstrap` PHP bisa gagal saat decode GeoJSON besar; jika itu terjadi, arahkan frontend ke API eksternal yang lebih kuat lewat `public/assets/js/runtime-config.js`
+- bila tetap memakai fallback statis `public/data/bootstrap.json`, file itu harus diekspor ulang setiap kali `data/dashboard.sqlite` diganti: `npm run export:bootstrap`
 
 ## Quick Start untuk Hosting
 
